@@ -41,7 +41,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(14,16,19,.9);backdrop-fi
 .cta{display:flex;flex-wrap:wrap;gap:14px}
 .photo{justify-self:center;position:relative;width:min(320px,80%)}
 .photo .frame{aspect-ratio:4/5;border-radius:34px;border:2px solid var(--line);background:linear-gradient(160deg,#1b212a,#12161b);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;transform:rotate(3deg)}
-.photo .frame::before{content:"ד";font-family:'Secular One';font-size:9rem;color:var(--acc);opacity:.9}
+.photo .frame::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);pointer-events:none}
 .photo .frame .me{position:absolute;inset:0;background:url(me.jpg) center/cover no-repeat}
 .photo .chip{position:absolute;background:var(--acc);color:#10130a;font-weight:700;border-radius:999px;padding:8px 16px;font-size:.92rem;box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .photo .c1{bottom:-14px;right:-14px;transform:rotate(-4deg)}
@@ -131,13 +131,73 @@ body{font-size:16px}
 .cta .btn{width:100%;justify-content:center}
 form{padding:24px 18px}
 }
+
+/* Motion and small-screen polish: transform/opacity only, no animation library. */
+.stats b{text-align:right}
+.photo .frame .me{width:100%;height:100%;object-fit:cover;object-position:center 35%;background:none}
+.hero .wrap>div:first-child>*{animation:hero-in .8s cubic-bezier(.2,.7,.2,1) both}
+.hero .eyebrow{animation-delay:.08s!important}.hero h1{animation-delay:.18s!important}
+.hero p{animation-delay:.28s!important}.hero .cta{animation-delay:.38s!important}
+.photo{animation:portrait-in 1s cubic-bezier(.2,.7,.2,1) both}
+.photo .frame{border-color:rgba(200,255,61,.4);box-shadow:0 24px 70px #0006}
+.photo .c1{animation:float-one 6s ease-in-out 1s infinite}
+.photo .c2{animation:float-two 7s ease-in-out 1s infinite}
+.hero::before{pointer-events:none;animation:glow-drift 14s ease-in-out infinite alternate}
+.btn{transition:transform .22s,background .22s,box-shadow .22s}
+.btn:hover{box-shadow:0 6px 24px #c8ff3d22}
+a:focus-visible,button:focus-visible{outline:3px solid var(--acc2);outline-offset:5px}
+.nav ul a{position:relative;transition:color .2s}
+.nav ul a::after{content:"";position:absolute;bottom:-8px;right:0;width:100%;height:2px;background:var(--acc);transform:scaleX(0);transform-origin:right;transition:transform .25s}
+.nav ul a:hover::after,.nav ul a.active::after{transform:scaleX(1)}
+.step{transition:transform .25s,border-color .25s,box-shadow .25s}
+.chips span{transition:border-color .2s,background .2s}
+.shot img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+@media(hover:hover){.step:hover{transform:translateY(-7px);border-color:#c8ff3d88;box-shadow:0 15px 35px #0003}.chips span:hover{border-color:var(--acc);background:#c8ff3d0a}.shot:hover img{transform:scale(1.035)}}
+.reveal{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--delay,0ms)}
+.reveal.pending{opacity:0;transform:translateY(26px)}
+.menu-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:8px 11px;font:inherit;cursor:pointer}
+section[id]{scroll-margin-top:12px}
+@keyframes hero-in{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes portrait-in{from{opacity:0;transform:translateY(25px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes float-one{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(-2deg)}}
+@keyframes float-two{0%,100%{transform:translateY(0) rotate(5deg)}50%{transform:translateY(7px) rotate(2deg)}}
+@keyframes glow-drift{to{transform:translate(30px,35px)}}
+@media(max-width:900px){
+.nav{gap:12px}.nav .logo{margin-left:auto}.nav>.btn{padding:8px 16px;font-size:.9rem}
+.menu-toggle{display:block}.nav ul{position:absolute;top:64px;right:0;left:0;padding:18px 22px 24px;background:#101318;border-bottom:1px solid var(--line);gap:0;box-shadow:0 18px 30px #0005}
+.nav ul.open{display:grid;grid-template-columns:1fr 1fr;gap:8px}.nav ul a{display:block;padding:10px 8px}.nav ul a::after{display:none}
+.hero .wrap{gap:42px}.hero h1{max-width:690px}.hero p{max-width:650px}
+.photo{width:260px;max-width:76%;margin-bottom:12px}.photo .frame{aspect-ratio:4/4.65}
+.about,.cgrid{gap:34px}.stats .wrap{gap:26px 22px}
+}
+@media(max-width:560px){
+.wrap{padding-inline:20px}.hero{padding:32px 0 42px}.hero .wrap{gap:36px}
+.hero h1{font-size:clamp(2.4rem,10.4vw,3.4rem);line-height:1.13;margin-bottom:18px;letter-spacing:-.025em}
+.hero .eyebrow{font-size:.85rem;margin-bottom:14px;gap:8px}.eyebrow::before{width:24px}
+.hero p{font-size:1rem;line-height:1.8;margin-bottom:23px}.cta{gap:10px}.cta .btn{padding:12px 18px}
+.photo{width:236px}.photo .chip{font-size:.76rem;padding:7px 12px;white-space:nowrap}.photo .c1{right:-16px;bottom:-10px}.photo .c2{left:-18px;top:16px}
+.stats .wrap{padding-block:26px}.stats b{font-size:2rem}.stats span{font-size:.85rem;line-height:1.6;display:block;margin-top:7px}
+section{padding:52px 0}.head{margin-bottom:28px}.head h2{font-size:2rem}.head p{font-size:1rem}
+.step{padding:21px}.steps{gap:14px}.step i{font-size:2rem;margin-bottom:3px}
+.proj{gap:23px;padding:30px 0}.proj h3{overflow-wrap:anywhere}.proj .btn{min-height:44px}.proj .chips{gap:6px}.chips span{font-size:.85rem;padding:5px 11px}
+.shot{border-radius:12px}.shot .bar{height:25px}.shot .bar i{width:8px;height:8px}
+.contact h2{font-size:2.2rem}.contact p{font-size:1rem}.contact{padding-bottom:65px}
+input,select,textarea{min-width:0;font-size:16px}form{min-width:0}.cgrid>*{min-width:0}
+footer{padding-bottom:96px}.fab{width:52px;height:52px;bottom:max(16px,env(safe-area-inset-bottom));left:16px}
+.reveal.pending{transform:translateY(18px)}
+}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.reveal.pending{opacity:1;transform:none}
+}
+
 </style>
 </head>
 <body>
 <header>
   <div class="wrap nav">
     <a class="logo" href="#top">דודי<b>.</b></a>
-    <ul>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="פתיחת תפריט ניווט">תפריט ☰</button>
+    <ul id="site-menu">
       <li><a href="#about">עליי</a></li>
       <li><a href="#process">איך אני עובד</a></li>
       <li><a href="#projects">פרויקטים</a></li>
@@ -160,7 +220,7 @@ form{padding:24px 18px}
       </div>
     </div>
     <div class="photo">
-      <div class="frame"><div class="me"></div></div>
+      <div class="frame"><img class="me" src="me.jpg" width="959" height="1198" alt="דודי - בונה אתרים וחנויות לעסקים" fetchpriority="high"></div>
       <span class="chip c1">אתרים. חנויות. תפריטים.</span>
       <span class="chip c2">בעברית, מימין לשמאל</span>
     </div>
@@ -348,6 +408,23 @@ form{padding:24px 18px}
     window.open('https://wa.me/972525222811?text='+encodeURIComponent(txt),'_blank','noopener');
   });
   ['n','p','m'].forEach(function(i){document.getElementById(i).addEventListener('input',function(){bad(i,false)})});
+})();
+</script>
+<script>
+(function(){
+  var toggle=document.querySelector('.menu-toggle'),menu=document.getElementById('site-menu');
+  function closeMenu(){menu.classList.remove('open');toggle.setAttribute('aria-expanded','false')}
+  toggle.addEventListener('click',function(){var open=menu.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open))});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var items=document.querySelectorAll('#about .about>div,.process .head,.step,#projects .head,.proj,.stats .wrap>div,.cgrid>div,.cgrid>form');
+  var reveal=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pending');reveal.unobserve(e.target)}})},{threshold:.08});
+  items.forEach(function(el){el.classList.add('reveal');if(el.getBoundingClientRect().top>window.innerHeight){el.classList.add('pending')}reveal.observe(el)});
+  document.querySelectorAll('.step').forEach(function(el,i){el.style.setProperty('--delay',(i%2)*75+'ms')});
+  var navLinks=document.querySelectorAll('.nav ul a');
+  var active=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){navLinks.forEach(function(a){a.classList.toggle('active',a.hash==='#'+e.target.id)})}})},{rootMargin:'-20% 0px -60% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(s){active.observe(s)});
 })();
 </script>
 </body>
